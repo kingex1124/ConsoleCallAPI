@@ -18,7 +18,7 @@ namespace ConsoleCallAPI
         {
             Program pg = new Program();
 
-            string callAPIResult = pg.CallAPI("https://www.twse.com.tw/exchangeReport/TWT48U?response=json&_=1595468883696");
+            string callAPIResult = pg.CallAPI("https://www.twse.com.tw/exchangeReport/TWT48U?response=json");
 
             var model = JsonConvert.DeserializeObject<JsonFirstData>(callAPIResult);
 
@@ -34,8 +34,8 @@ namespace ConsoleCallAPI
                 };
                 myJsonList.Add(mjd);
             }
-
-            string callAPIResult2 = pg.CallAPI("https://www.tpex.org.tw/web/stock/exright/preAnnounce/PrePost_result.php?l=zh-tw&_=1595469494116");
+            //https://www.tpex.org.tw/web/stock/exright/preAnnounce/PrePost_result.php?l=zh-tw&_=1595478097827
+            string callAPIResult2 = pg.CallAPI("https://www.tpex.org.tw/web/stock/exright/preAnnounce/PrePost_result.php?l=zh-tw");
 
             var model2 = JsonConvert.DeserializeObject<JsonFirstData2>(callAPIResult2);
 
@@ -51,6 +51,22 @@ namespace ConsoleCallAPI
                 };
                 myJsonList2.Add(mjd);
             }
+
+            List<MyJsonData> result = new List<MyJsonData>();
+
+            foreach (var item in myJsonList)
+            {
+                var data = myJsonList2.Find(o => o.Code == item.Code);
+                if (data != null)
+                {
+                    if (item.CashDividend != data.CashDividend)
+                    {
+                        result.Add(item);
+                        result.Add(data);
+                    }
+                }
+            }
+
         }
 
         /// <summary>
