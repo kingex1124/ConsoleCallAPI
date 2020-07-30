@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace ConsoleCallAPI
 {
@@ -52,20 +54,18 @@ namespace ConsoleCallAPI
                 myJsonList2.Add(mjd);
             }
 
-            List<MyJsonData> result = new List<MyJsonData>();
+            //取得Xml String
+            string callAPIResult3 = pg.CallAPI("http://128.110.14.61/admin/SysSetup/CheckSum.aspx?m_actno=011714&bhno=all&day=20200730");
 
-            foreach (var item in myJsonList)
-            {
-                var data = myJsonList2.Find(o => o.Code == item.Code);
-                if (data != null)
-                {
-                    if (item.CashDividend != data.CashDividend)
-                    {
-                        result.Add(item);
-                        result.Add(data);
-                    }
-                }
-            }
+            // 讀取Xml資料
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(callAPIResult3);
+
+            // 把Xml轉成Json
+            string jsonText = JsonConvert.SerializeXmlNode(doc);
+
+            // 把Json 轉成Class
+            var model3 = JsonConvert.DeserializeObject<XmlJsonData>(jsonText);
 
         }
 

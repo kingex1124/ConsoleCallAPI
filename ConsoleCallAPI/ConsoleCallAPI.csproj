@@ -49,6 +49,8 @@
     <Compile Include="Model\JsonFirstData.cs" />
     <Compile Include="Model\JsonFirstData2.cs" />
     <Compile Include="Model\MyJsonData.cs" />
+    <Compile Include="Model\query_listsQuery_listQuery.cs" />
+    <Compile Include="Model\XmlJsonData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
