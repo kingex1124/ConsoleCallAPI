@@ -18,6 +18,17 @@ namespace ConsoleCallAPI
     {
         static void Main(string[] args)
         {
+            CallAPIHelper cah = new CallAPIHelper();
+            var values = new Dictionary<string, string>
+{
+    { "MachineName", "CAMTKAP01" },
+    { "status", "true" }
+};
+
+            var rescha = cah.CallAPIPost<ExecuteResult>("https://localhost:44338/api/DailyCheckOldAPI/SetPriceStatus", values);
+
+            var rescha2 = cah.CallAPIPost<ExecuteResult>("https://localhost:44338/api/DailyCheckOldAPI/SetPriceStatus", "{'MachineName':'CAMTKAP01','status':true}");
+
             Program pg = new Program();
 
             string callAPIResult = pg.CallAPI("https://www.twse.com.tw/exchangeReport/TWT48U?response=json");
@@ -103,6 +114,27 @@ namespace ConsoleCallAPI
 
             //Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
             client.Dispose();
+        }
+
+        public void CallAPIPost()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var values = new Dictionary<string, string>
+                            {
+                                { "MachineName", "CAMTKAP01" },
+                                { "status", "true" }
+                            };
+
+                var content = new FormUrlEncodedContent(values);
+
+                var response = client.PostAsync("https://localhost:44338/api/DailyCheckOldAPI/SetPriceStatus", content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseString = response.Content.ReadAsStringAsync();
+                }
+            }
         }
     }
 }
